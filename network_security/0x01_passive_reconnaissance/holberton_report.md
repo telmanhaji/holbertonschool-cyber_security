@@ -2,27 +2,27 @@
 
 ## IP Addresses
 
-- 192.0.78.131
-- 3.248.56.152
-- 13.38.122.220
-- 16.16.119.222
-- 104.17.201.193
-- 35.181.94.248
-- 216.198.54.2
-- 13.49.111.177
-- 35.181.181.121
-- 34.203.198.145
-- 52.47.143.83
-- 54.86.136.129
-- 15.160.106.203
-- 75.2.70.75
-- 13.38.216.13
-- 18.66.26.61
-- 54.89.246.137
-- 51.44.96.144
-- 18.244.87.120
-- 75.2.70.75
-- 104.17.201.193
+IP Address	    Hostname	                                Provider	    Location
+13.38.216.13	lvl2-discourse-staging.holbertonschool.com	leakix	        Unknown
+35.152.119.144	webflow.holbertonschool.com	                leakix	        Unknown
+13.38.122.220	staging-apply-forum.holbertonschool.com	    subdomaincenter	Unknown
+18.155.129.90	assets.holbertonschool.com	                subdomaincenter	Unknown
+54.157.56.129	alpha.holbertonschool.com	                subdomaincenter	Unknown
+52.222.169.18	staging-rails-assets-apply.holbertonschool.com	alienvault	Unknown
+34.203.198.145	v2.holbertonschool.com	                    leakix	        Unknown
+51.20.161.157	www.holbertonschool.com	                    leakix	        Unknown
+54.89.246.137	v3.holbertonschool.com	                    leakix	        Unknown
+13.39.252.4	    staging-apply.holbertonschool.com	        subdomaincenter	Unknown
+192.0.78.230	blog.holbertonschool.com	                leakix	        Unknown
+52.47.145.169	apply.holbertonschool.com	                leakix	        Unknown
+3.214.214.66	beta.holbertonschool.com	                subdomaincenter	Unknown
+104.17.201.193	fr.webflow.holbertonschool.com	            alienvault	    Unknown
+108.156.39.87	rails-assets.holbertonschool.com	        subdomaincenter	Unknown
+15.237.230.24	read.holbertonschool.com	                subdomaincenter	Unknown
+216.198.54.1	support.holbertonschool.com	                leakix	        Unknown
+54.86.136.129	v1.holbertonschool.com	                    leakix	        Unknown
+13.50.141.112	fr.holbertonschool.com	                    subdomaincenter	Unknown
+18.102.16.191	smile2021.holbertonschool.com	            alienvault	    Unknown
 
 ---
 
