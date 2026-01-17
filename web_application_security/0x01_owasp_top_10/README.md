@@ -80,5 +80,3 @@ At the end of this project, you are expected to be able to explain the following
 
 * **GitHub repository:** `holbertonschool-cyber_security`
 * **Directory:** `web_application_security/0x0c_owasp_top_10`
-
-Would you like me to create a sample Bash script that follows the Betty style and the specific constraints (no `&&`, `||`, etc.) mentioned in the requirements?
