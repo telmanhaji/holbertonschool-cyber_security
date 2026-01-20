@@ -86,5 +86,3 @@ At the end of this project, you are expected to be able to explain the following
 
 * **GitHub repository:** `holbertonschool-web_fundamentals`
 * **Directory:** `basics_0`
-
-Would you like me to create an example of a two-line script that follows the Betty style for this project?
