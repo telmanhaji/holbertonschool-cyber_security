@@ -81,5 +81,5 @@ By the end of this project, you should be able to explain the following concepts
 
 ## 📋 Repository Information
 
-* **GitHub repository:** `holbertonschool-cyber_security/linux_security/`
-* **Directory:** `0x03_protocols_servers`
+* **GitHub repository:** `holbertonschool-cyber_security`
+* **Directory:** `linux_security/0x03_protocols_servers`
