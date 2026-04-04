@@ -1,90 +1,86 @@
-# 🛡️ Command Injection (CVE‑2021‑44228 Explained)
-### Holberton School Azerbaijan — Cybersecurity Project    
-**Date:** April 2026  
+***
 
----
+# Prompt Injections: Command Injection Deep Dive
 
-## 📌 Overview
+## 🛡️ Project Overview
+This project explores the mechanics of **Command Injection** vulnerabilities, specifically focusing on the theory behind exploits like **CVE-2021-44228** (Log4Shell) and the fundamental Bash scripting concepts required to both execute and prevent these attacks. 
 
-This project dives deep into **Command Injection vulnerabilities**, one of the most dangerous and common security flaws found in insecure web applications. You will explore how these attacks work, learn to identify them, understand the underlying Bash mechanisms that make them possible, and review methods to prevent them.
-
-This repository is part of the **Holberton School Azerbaijan** project-based curriculum, focusing on real-world, hands-on cybersecurity learning.
+The goal is to understand how untrusted input can be manipulated to execute arbitrary commands on a host operating system.
 
 ---
 
 ## 🎯 Learning Objectives
+By the end of this project, you should be able to explain the following concepts without external assistance:
 
-By the end of this project, you should be able to clearly explain:
+### Core Concepts
+* [ ] **What is Command Injection?** Understanding the vulnerability.
+* [ ] **The Mechanics:** How command injection works at the OS level.
+* [ ] **Attack Vectors:** Identifying common entry points in web applications.
+* [ ] **Impact Assessment:** The potential consequences of a successful system breach.
 
-### ✅ Core Concepts
-- What **command injection** is  
-- How command injection works internally  
-- Common payload patterns (high‑level understanding only)  
-- Typical attack vectors used by attackers  
+### Bash & Scripting Mastery
+* [ ] **Special Variables:** Understanding Bash special variables and their roles.
+* [ ] **Logic Operators:** The difference between `&&` (AND) and `;` (Semicolon) in command execution.
+* [ ] **IFS (Internal Field Separator):** What it means and how it dictates word splitting.
+* [ ] **Exploitation via IFS:** How to manipulate the separator to bypass filters or change execution flow.
 
-### ✅ Bash Knowledge
-- Bash special variables  
-- The difference between:
-  - `&&` (conditional execution)
-  - `;` (sequential execution)
-- What **IFS (Internal Field Separator)** is  
-- How manipulating **IFS** affects command execution  
-
-### ✅ Offensive Security Awareness
-- Common techniques used by attackers  
-- How DNS or callback tools (like **interactsh**) are used to detect exploitability  
-
-### ✅ Defensive Security
-- Practical steps to defend web applications  
-- Secure coding principles  
-- Proper input validation strategies  
+### Defensive & Offensive Tactics
+* [ ] **Common Payloads:** Familiarity with standard strings used to test for injection.
+* [ ] **Hacker Tricks:** Understanding obfuscation and evasion techniques.
+* [ ] **Prevention:** Best practices for securing applications against these vulnerabilities.
 
 ---
 
-## 🧠 What Is Command Injection?
+## 📚 Resources
 
-**Command Injection** happens when a web application passes **untrusted user input** directly into a system command.  
-This allows an attacker to **inject additional commands** that the server executes.
+### Fundamental Reading
+| Resource | Description |
+| :--- | :--- |
+| [Command Injection Overview](https://owasp.org/www-community/attacks/Command_Injection) | OWASP guide on the vulnerability. |
+| [BashGuide](https://mywiki.wooledge.org/BashGuide) | Comprehensive guide to mastering Bash. |
+| [Bash Special Variables](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) | Documentation on `$?`, `$!`, `$#`, etc. |
 
-It can lead to:
-- Full system compromise  
-- Data exfiltration  
-- Privilege escalation  
-- Remote Code Execution (RCE)  
-
----
-
-## 🏗️ Project Requirements
-
-✅ All Bash scripts must:  
-- Be written using `vi`, `vim`, or `emacs`  
-- Contain **exactly two lines**  
-- Accept an argument representing an IP range → `$1`  
-- Be tested on **Kali Linux**  
-- End with a newline  
-- Follow proper shell formatting standards  
-
-✅ `README.md` is mandatory (this file)
+### Exploitation & Tools
+* **Payloads:** [PayloadsAllTheThings - Command Injection](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection)
+* **Networking:** [Interactsh](https://github.com/projectdiscovery/interactsh) (Useful if Burp Suite Pro is unavailable).
+* **Techniques:** [HackTricks - Command Injection](https://book.hacktricks.xyz/pentesting-web/command-injection)
 
 ---
 
-## 📦 Tools & Resources
+## 🛠️ Requirements & Environment
 
-You should review these as part of your research:
+### General Specifications
+* **Operating System:** All scripts will be tested on **Kali Linux**.
+* **Allowed Editors:** `vi`, `vim`, `emacs`.
+* **Mandatory File:** A `README.md` file at the root of the project folder.
 
-- Command Injection Overview  
-- BashGuide  
-- Payload Lists (conceptually)  
-- Bash Special Variables documentation  
-- Bash operators (`&&`, `;`)  
-- Internal Field Separator (IFS)  
-- interactsh (for receiving callbacks if you do not have Burp Suite Pro)
+### Scripting Constraints
+* **Length:** All scripts must be **exactly two lines long**. 
+  * *Verification:* `wc -l file` should return `2`.
+* **Dynamic Input:** Scripts must substitute the target IP range for the first positional parameter (`$1`).
+* **Formatting:** All files must end with a new line.
+
+> **Note:** Why end with a new line? It is a POSIX standard that ensures files are processed correctly by various Unix tools and prevents terminal prompts from bleeding into the last line of output.
 
 ---
 
-## 🧩 Example Topics You Will Understand
+## 🚀 Getting Started
 
-### 🔹 Why does this work?
+If you are testing for out-of-band interactions and do not have access to Burp Suite Professional, you can use the **Interactsh** docker image:
 
 ```bash
-ping $USER_INPUT
+# Example for setting up an interactsh client
+docker run projectdiscovery/interactsh:latest -v
+```
+
+### Script Example Structure
+Your scripts should follow this logic:
+```bash
+#!/bin/bash
+[Your Command Logic Here involving $1]
+```
+
+---
+
+## ⚖️ Disclaimer
+This project is for **educational purposes only**. Unauthorized access to computer systems is illegal. Always practice ethical hacking and obtain permission before testing any environment.
