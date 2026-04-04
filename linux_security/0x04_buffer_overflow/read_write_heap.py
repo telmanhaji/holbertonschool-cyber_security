@@ -1,119 +1,48 @@
 #!/usr/bin/python3
 """
-HOLBERTON CYBERSECURITY - PROJECT: BUFFER OVERFLOW
-Task 0: Heap Manipulation via /proc filesystem.
-
-This script demonstrates how Linux handles process memory as a file.
-By accessing /proc/[PID]/mem, we can bypass standard process
-restrictions (if we have root privileges).
+This script locates and replaces a string in the heap of a running process.
 """
-
 import sys
 
 
-def print_usage():
-    """Prints clear instructions for the team."""
-    print("Usage: sudo ./read_write_heap.py pid search_string replace_string")
-    print("Example: sudo ./read_write_heap.py 1234 'Holberton' 'Hackerton'")
-
-
 def main():
-    """
-    Main entry point for the memory manipulation tool.
-    Locates the heap of a PID and replaces a specific string.
-    """
-    # --- 1. ARGUMENT VALIDATION ---
-    # We need exactly 3 arguments (plus the script name).
+    """Main execution block"""
+    # Basic check to ensure the user provides exactly 3 arguments
     if len(sys.argv) != 4:
-        print_usage()
+        print("Usage: read_write_heap.py pid search_string replace_string")
         sys.exit(1)
 
+    # 1. Get the inputs from the terminal
     pid = sys.argv[1]
-    search_str = sys.argv[2]
-    replace_str = sys.argv[3]
+    search_string = sys.argv[2].encode('ascii')
+    replace_string = sys.argv[3].encode('ascii')
 
-    # Convert strings to bytes immediately.
-    # Python 3 strings are Unicode, but memory is raw BYTES.
-    search_bytes = search_str.encode('ascii')
-    replace_bytes = replace_str.encode('ascii')
+    # 2. Find exactly where the heap is located
+    with open(f"/proc/{pid}/maps", 'r') as maps_file:
+        for line in maps_file:
+            if "[heap]" in line:
+                address_range = line.split(' ')[0]
+                start_hex, end_hex = address_range.split('-')
+                heap_start = int(start_hex, 16)
+                heap_end = int(end_hex, 16)
+                break
 
-    # --- 2. SECURITY CHECK: BUFFER INTEGRITY ---
-    # In C, if we write a longer string than the original,
-    # we cause a 'Buffer Overflow' and corrupt the heap metadata.
-    if len(replace_bytes) > len(search_bytes):
-        print(f"[!] Warning: Replace string is longer than search string.")
-        print("    This will likely cause a Segfault in the target process.")
+    # 3. Read the memory, find the string, and overwrite it
+    with open(f"/proc/{pid}/mem", 'r+b') as mem_file:
+        mem_file.seek(heap_start)
+        heap_data = mem_file.read(heap_end - heap_start)
 
-    # --- 3. PARSING /proc/[PID]/maps ---
-    # This file is the 'Map' of the process's Virtual Memory.
-    try:
-        with open(f"/proc/{pid}/maps", "r") as maps_file:
-            heap_found = False
-            for line in maps_file:
-                # We only care about the memory region tagged as [heap]
-                if "[heap]" in line:
-                    # Format: 'start-end permissions offset device inode [heap]'
-                    parts = line.split()
-                    addr_range = parts[0].split('-')
+        offset = heap_data.find(search_string)
+        if offset == -1:
+            print("Error: String not found in heap.")
+            sys.exit(1)
 
-                    # Convert Hex strings to Python Integers
-                    heap_start = int(addr_range[0], 16)
-                    heap_end = int(addr_range[1], 16)
+        mem_file.seek(heap_start + offset)
 
-                    # Ensure the heap is writable ('w' must be in permissions)
-                    if 'w' not in parts[1]:
-                        print(f"[!] Error: Heap at {parts[0]} is not writable.")
-                        sys.exit(1)
-
-                    heap_found = True
-                    print(f"[*] Found [heap] at: {addr_range[0]}")
-                    break
-
-            if not heap_found:
-                print(f"[!] Error: Could not locate [heap] for PID {pid}")
-                sys.exit(1)
-
-        # --- 4. ACCESSING /proc/[PID]/mem ---
-        # Special file mapping directly to the process's RAM.
-        # 'r+b' = Read and Write in Binary mode.
-        with open(f"/proc/{pid}/mem", "r+b") as mem_file:
-            # Move the 'cursor' to the start of the heap in RAM
-            mem_file.seek(heap_start)
-
-            # Read the entire heap into local memory for scanning
-            heap_data = mem_file.read(heap_end - heap_start)
-
-            # --- 5. SEARCH AND REPLACE ---
-            # Search for the bytes in the heap dump
-            offset = heap_data.find(search_bytes)
-
-            if offset == -1:
-                print(f"[!] Error: '{search_str}' not found in the heap.")
-                sys.exit(1)
-
-            addr = hex(heap_start + offset)
-            print(f"[*] Found '{search_str}' at address: {addr}")
-
-            # Prepare the payload using padding logic.
-            # Shorter replacement strings are padded with Null Bytes (0x00)
-            # to maintain memory cleanliness for C functions.
-            payload = replace_bytes.ljust(len(search_bytes), b'\x00')
-
-            # Move the file cursor to the EXACT location of the string
-            mem_file.seek(heap_start + offset)
-
-            # OVERWRITE!
-            mem_file.write(payload)
-            print(f"[*] Successfully wrote '{replace_str}' to memory.")
-
-    except PermissionError:
-        print("[!] Access Denied: You MUST run this script with 'sudo'.")
-    except FileNotFoundError:
-        print(f"[!] Error: Process {pid} does not exist.")
-    except Exception as e:
-        print(f"[!] An unexpected error occurred: {e}")
+        # Pad with null bytes if replacement string is shorter
+        padded_replace = replace_string.ljust(len(search_string), b'\x00')
+        mem_file.write(padded_replace)
 
 
 if __name__ == "__main__":
     main()
-
