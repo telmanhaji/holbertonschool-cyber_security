@@ -1,4 +1,4 @@
-This is `README.md` for your GitHub repository. It synthesizes the advanced scanning techniques of Nmap with the strict scripting constraints required for the project.
+This is `README.md` for repo about  advanced scanning techniques of Nmap with the strict scripting constraints required for the project.
 
 ***
 
