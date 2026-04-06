@@ -1,4 +1,4 @@
-This is `README.md` for your GitHub repository. It balances technical precision with clear organization, specifically tailored for the **Insecure Direct Object Reference (IDOR)** module.
+This is `README.md` for the **Insecure Direct Object Reference (IDOR)** module.
 
 ***
 
