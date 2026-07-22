@@ -1,2 +1,2 @@
 #!/bin/bash
-grep "Accepted password for root" auth.log | awk '{print$(NF-3)}' | sort | uniq -c | wc -l
+grep "Accepted" auth.log | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | sort -u | wc -l
